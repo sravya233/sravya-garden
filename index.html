@@ -3,454 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spice Garden</title>
-
+<title>Sravya Garden</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-
 <style>
-body {
-  font-family: 'Nunito', sans-serif;
-  background:#FFF8F0;
-  margin:0;
-}
-
-/* HEADER */
-header{
-  background:#c02b7d;
-  color:white;
-  text-align:center;
-  padding:20px;
-}
-
-/* SECTION TITLE */
-.section-title{
-  padding:10px 20px;
-  font-size:20px;
-  font-weight:800;
-  color:#2b7dc0;
-}
-
-/* GRID */
-.menu{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-  padding:10px 20px 30px;
-}
-
-/* CARD */
-.card{
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 3px 10px rgba(37, 2, 2, 0.478);
-}
-
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-
-.card-body{
-  padding:12px;
-}
-
-.price{
-  color:#C0392B;
-  font-weight:bold;
-}
-
-button{
-  background:#250790;
-  color:white;
-  border:none;
-  padding:6px 12px;
-  margin-top:8px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* CART */
-#cartBar{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:white;
-  padding:10px;
-  display:none;
-  justify-content:space-between;
-  box-shadow:0 -2px 10px rgba(0,0,0,0.2);
-}
-
-#cartModal{
-  display:none;
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  background:rgba(0,0,0,0.5);
-}
-
-.modal{
-  background:white;
-  margin:60px auto;
-  padding:20px;
-  width:90%;
-  max-width:400px;
-  border-radius:10px;
-}
+* { box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: #FFF8F0; margin: 0; padding-bottom: 80px; }
+header { background: #c02b7d; color: white; text-align: center; padding: 20px; }
+#statusBar { text-align: center; padding: 7px; font-size: 13px; font-weight: 700; background: #f0f0f0; color: #888; }
+.nav-link { text-align: right; padding: 8px 20px; }
+.nav-link a { color: #250790; font-weight: 800; text-decoration: none; font-size: 14px; }
+.section-title { padding: 10px 20px; font-size: 20px; font-weight: 800; color: #2b7dc0; }
+.menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; padding: 10px 20px 30px; }
+.card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(37,2,2,0.15); transition: transform 0.2s; }
+.card:hover { transform: translateY(-3px); }
+.card img { width: 100%; height: 180px; object-fit: cover; }
+.card-body { padding: 12px; }
+.price { color: #C0392B; font-weight: bold; }
+button { background: #250790; color: white; border: none; padding: 6px 12px; margin-top: 8px; border-radius: 6px; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; transition: background 0.2s; }
+#cartBar { position: fixed; bottom: 0; width: 100%; background: #250790; color: white; padding: 12px 20px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); z-index: 50; }
+#cartBar button { background: white; color: #250790; font-weight: 800; padding: 8px 18px; border-radius: 8px; }
+#cartModal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; }
+.modal { background: white; margin: 50px auto; padding: 24px; width: 90%; max-width: 420px; border-radius: 14px; max-height: 80vh; overflow-y: auto; }
+.modal h2 { margin: 0 0 16px; color: #250790; }
 </style>
 </head>
-
 <body>
 
 <header>
-<h1>🍛 SRAVYA GARDEN</h1>
-<p>ORDER DELICIOUS FOOD ONLINE</p>
+  <h1>🍛 SRAVYA GARDEN</h1>
+  <p>ORDER DELICIOUS FOOD ONLINE</p>
 </header>
+
+<div id="statusBar">⏳ Checking backend...</div>
+
+<div class="nav-link">
+  <a href="order.html">📋 View All Orders →</a>
+</div>
 
 <!-- NON VEG -->
 <div class="section-title">🍗 Non-Veg</div>
 <div class="menu">
-
-<div class="card"><img src="images/chicken.jpg"><div class="card-body"><h3>Chicken Biryani</h3><p class="price">₹280</p><button onclick="addToCart('Chicken Biryani',280)">Add</button></div></div>
-
-<div class="card"><img src="images/fishcurry.jpg"><div class="card-body"><h3>Fish Curry</h3><p class="price">₹320</p><button onclick="addToCart('Fish Curry',320)">Add</button></div></div>
-
-<div class="card"><img src="images/prawns-biryani.jpg"><div class="card-body"><h3>Prawns Biryani</h3><p class="price">₹350</p><button onclick="addToCart('Prawns Biryani',350)">Add</button></div></div>
-
-<div class="card"><img src="images/curry.jpg"><div class="card-body"><h3>Chicken Curry</h3><p class="price">₹260</p><button onclick="addToCart('Chicken Curry',260)">Add</button></div></div>
-
-<div class="card"><img src="images/prawn-curry.jpg"><div class="card-body"><h3>Prawns Curry</h3><p class="price">₹340</p><button onclick="addToCart('Prawns Curry',340)">Add</button></div></div>
-
-<div class="card"><img src="images/fish fry.jpg"><div class="card-body"><h3>Fish Fry</h3><p class="price">₹250</p><button onclick="addToCart('Fish Fry',250)">Add</button></div></div>
-
-<div class="card"><img src="images/mutton.jpg"><div class="card-body"><h3>Mutton Biryani</h3><p class="price">₹380</p><button onclick="addToCart('Mutton Biryani',380)">Add</button></div></div>
-
-<div class="card"><img src="images/lollipop.jpg"><div class="card-body"><h3>Chicken Lollipop</h3><p class="price">₹220</p><button onclick="addToCart('Chicken Lollipop',220)">Add</button></div></div>
-
-<div class="card"><img src="images/thikka.jpg"><div class="card-body"><h3>Chicken Tikka</h3><p class="price">₹260</p><button onclick="addToCart('Chicken Tikka',260)">Add</button></div></div>
-
-<div class="card"><img src="images/chicken-65.jpg"><div class="card-body"><h3>Chicken 65</h3><p class="price">₹240</p><button onclick="addToCart('Chicken 65',240)">Add</button></div></div>
-
-<div class="card"><img src="images/chilli-chicken.jpg"><div class="card-body"><h3>Chilli Chicken</h3><p class="price">₹260</p><button onclick="addToCart('Chilli Chicken',260)">Add</button></div></div>
-
+  <div class="card"><img src="images/chicken.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍗'"><div class="card-body"><h3>Chicken Biryani</h3><p class="price">₹280</p><button onclick="addToCart('Chicken Biryani',280)">Add</button></div></div>
+  <div class="card"><img src="images/fishcurry.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🐟'"><div class="card-body"><h3>Fish Curry</h3><p class="price">₹320</p><button onclick="addToCart('Fish Curry',320)">Add</button></div></div>
+  <div class="card"><img src="images/prawns-biryani.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🦐'"><div class="card-body"><h3>Prawns Biryani</h3><p class="price">₹350</p><button onclick="addToCart('Prawns Biryani',350)">Add</button></div></div>
+  <div class="card"><img src="images/curry.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍛'"><div class="card-body"><h3>Chicken Curry</h3><p class="price">₹260</p><button onclick="addToCart('Chicken Curry',260)">Add</button></div></div>
+  <div class="card"><img src="images/prawn-curry.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🦐'"><div class="card-body"><h3>Prawns Curry</h3><p class="price">₹340</p><button onclick="addToCart('Prawns Curry',340)">Add</button></div></div>
+  <div class="card"><img src="images/fish fry.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🐟'"><div class="card-body"><h3>Fish Fry</h3><p class="price">₹250</p><button onclick="addToCart('Fish Fry',250)">Add</button></div></div>
+  <div class="card"><img src="images/mutton.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍖'"><div class="card-body"><h3>Mutton Biryani</h3><p class="price">₹380</p><button onclick="addToCart('Mutton Biryani',380)">Add</button></div></div>
+  <div class="card"><img src="images/lollipop.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍗'"><div class="card-body"><h3>Chicken Lollipop</h3><p class="price">₹220</p><button onclick="addToCart('Chicken Lollipop',220)">Add</button></div></div>
+  <div class="card"><img src="images/thikka.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍢'"><div class="card-body"><h3>Chicken Tikka</h3><p class="price">₹260</p><button onclick="addToCart('Chicken Tikka',260)">Add</button></div></div>
+  <div class="card"><img src="images/chicken-65.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🍗'"><div class="card-body"><h3>Chicken 65</h3><p class="price">₹240</p><button onclick="addToCart('Chicken 65',240)">Add</button></div></div>
+  <div class="card"><img src="images/chilli-chicken.jpg" onerror="this.src='https://via.placeholder.com/300x180/c02b7d/fff?text=🌶️'"><div class="card-body"><h3>Chilli Chicken</h3><p class="price">₹260</p><button onclick="addToCart('Chilli Chicken',260)">Add</button></div></div>
 </div>
 
 <!-- VEG -->
 <div class="section-title">🥗 Veg</div>
 <div class="menu">
-
-<div class="card"><img src="images/veg-b.jpg"><div class="card-body"><h3>Veg Biryani</h3><p class="price">₹200</p><button onclick="addToCart('Veg Biryani',200)">Add</button></div></div>
-
-<div class="card"><img src="images/paneer-biryani.jpg"><div class="card-body"><h3>Paneer Biryani</h3><p class="price">₹250</p><button onclick="addToCart('Paneer Biryani',250)">Add</button></div></div>
-
-<div class="card"><img src="images/p.jpg"><div class="card-body"><h3>Palak Paneer</h3><p class="price">₹220</p><button onclick="addToCart('Palak Paneer',220)">Add</button></div></div>
-
-
-
-<div class="card"><img src="images/veg-thali.jpg"><div class="card-body"><h3>Veg Thali</h3><p class="price">₹250</p><button onclick="addToCart('Veg Thali',250)">Add</button></div></div>
-
-<div class="card"><img src="images/mushroom-biryani.jpg"><div class="card-body"><h3>Mushroom Biryani</h3><p class="price">₹240</p><button onclick="addToCart('Mushroom Biryani',240)">Add</button></div></div>
-
+  <div class="card"><img src="images/veg-b.jpg" onerror="this.src='https://via.placeholder.com/300x180/27ae60/fff?text=🥗'"><div class="card-body"><h3>Veg Biryani</h3><p class="price">₹200</p><button onclick="addToCart('Veg Biryani',200)">Add</button></div></div>
+  <div class="card"><img src="images/paneer-biryani.jpg" onerror="this.src='https://via.placeholder.com/300x180/27ae60/fff?text=🧀'"><div class="card-body"><h3>Paneer Biryani</h3><p class="price">₹250</p><button onclick="addToCart('Paneer Biryani',250)">Add</button></div></div>
+  <div class="card"><img src="images/p.jpg" onerror="this.src='https://via.placeholder.com/300x180/27ae60/fff?text=🥬'"><div class="card-body"><h3>Palak Paneer</h3><p class="price">₹220</p><button onclick="addToCart('Palak Paneer',220)">Add</button></div></div>
+  <div class="card"><img src="images/veg-thali.jpg" onerror="this.src='https://via.placeholder.com/300x180/27ae60/fff?text=🍽️'"><div class="card-body"><h3>Veg Thali</h3><p class="price">₹250</p><button onclick="addToCart('Veg Thali',250)">Add</button></div></div>
+  <div class="card"><img src="images/mushroom-biryani.jpg" onerror="this.src='https://via.placeholder.com/300x180/27ae60/fff?text=🍄'"><div class="card-body"><h3>Mushroom Biryani</h3><p class="price">₹240</p><button onclick="addToCart('Mushroom Biryani',240)">Add</button></div></div>
 </div>
 
 <!-- NOODLES -->
 <div class="section-title">🍜 Noodles</div>
 <div class="menu">
-
-<div class="card"><img src="images/chicken noodles.jpg"><div class="card-body"><h3>Chicken Noodles</h3><p class="price">₹180</p><button onclick="addToCart('Chicken Noodles',180)">Add</button></div></div>
-
-<div class="card"><img src="images/best_veg_noodles.jpg"><div class="card-body"><h3>Veg Noodles</h3><p class="price">₹150</p><button onclick="addToCart('Veg Noodles',150)">Add</button></div></div>
-
-<div class="card"><img src="images/egg noodles.jpg"><div class="card-body"><h3>Egg Noodles</h3><p class="price">₹160</p><button onclick="addToCart('Egg Noodles',160)">Add</button></div></div>
-
-<div class="card"><img src="images/mixed noodles.jpg"><div class="card-body"><h3>Mixed Noodles</h3><p class="price">₹190</p><button onclick="addToCart('Mixed Noodles',190)">Add</button></div></div>
-
-<div class="card"><img src="images/pra.noodles.jpg"><div class="card-body"><h3>Prawns Noodles</h3><p class="price">₹220</p><button onclick="addToCart('Prawns Noodles',220)">Add</button></div></div>
-
+  <div class="card"><img src="images/chicken noodles.jpg" onerror="this.src='https://via.placeholder.com/300x180/e67e22/fff?text=🍜'"><div class="card-body"><h3>Chicken Noodles</h3><p class="price">₹180</p><button onclick="addToCart('Chicken Noodles',180)">Add</button></div></div>
+  <div class="card"><img src="images/best_veg_noodles.jpg" onerror="this.src='https://via.placeholder.com/300x180/e67e22/fff?text=🍜'"><div class="card-body"><h3>Veg Noodles</h3><p class="price">₹150</p><button onclick="addToCart('Veg Noodles',150)">Add</button></div></div>
+  <div class="card"><img src="images/egg noodles.jpg" onerror="this.src='https://via.placeholder.com/300x180/e67e22/fff?text=🍜'"><div class="card-body"><h3>Egg Noodles</h3><p class="price">₹160</p><button onclick="addToCart('Egg Noodles',160)">Add</button></div></div>
+  <div class="card"><img src="images/mixed noodles.jpg" onerror="this.src='https://via.placeholder.com/300x180/e67e22/fff?text=🍜'"><div class="card-body"><h3>Mixed Noodles</h3><p class="price">₹190</p><button onclick="addToCart('Mixed Noodles',190)">Add</button></div></div>
+  <div class="card"><img src="images/pra.noodles.jpg" onerror="this.src='https://via.placeholder.com/300x180/e67e22/fff?text=🦐'"><div class="card-body"><h3>Prawns Noodles</h3><p class="price">₹220</p><button onclick="addToCart('Prawns Noodles',220)">Add</button></div></div>
 </div>
 
 <!-- FRIED RICE -->
 <div class="section-title">🍚 Fried Rice</div>
 <div class="menu">
-
-<div class="card"><img src="images/chicken-fried-rice.jpg"><div class="card-body"><h3>Chicken Fried Rice</h3><p class="price">₹180</p><button onclick="addToCart('Chicken Fried Rice',180)">Add</button></div></div>
-
-<div class="card"><img src="images/veg-fried-rice.jpg"><div class="card-body"><h3>Veg Fried Rice</h3><p class="price">₹150</p><button onclick="addToCart('Veg Fried Rice',150)">Add</button></div></div>
-
-<div class="card"><img src="images/Egg-Fried.jpg"><div class="card-body"><h3>Mixed Fried Rice</h3><p class="price">₹200</p><button onclick="addToCart('Mixed Fried Rice',200)">Add</button></div></div>
-
-<div class="card"><img src="images/panner fried rice.jpg"><div class="card-body"><h3>Paneer Fried Rice</h3><p class="price">₹170</p><button onclick="addToCart('Paneer Fried Rice',170)">Add</button></div></div>
-
-<div class="card"><img src="images/prawn-fried-rice.jpg"><div class="card-body"><h3>Prawns Fried Rice</h3><p class="price">₹220</p><button onclick="addToCart('Prawns Fried Rice',220)">Add</button></div></div>
-
+  <div class="card"><img src="images/chicken-fried-rice.jpg" onerror="this.src='https://via.placeholder.com/300x180/f39c12/fff?text=🍚'"><div class="card-body"><h3>Chicken Fried Rice</h3><p class="price">₹180</p><button onclick="addToCart('Chicken Fried Rice',180)">Add</button></div></div>
+  <div class="card"><img src="images/veg-fried-rice.jpg" onerror="this.src='https://via.placeholder.com/300x180/f39c12/fff?text=🍚'"><div class="card-body"><h3>Veg Fried Rice</h3><p class="price">₹150</p><button onclick="addToCart('Veg Fried Rice',150)">Add</button></div></div>
+  <div class="card"><img src="images/Egg-Fried.jpg" onerror="this.src='https://via.placeholder.com/300x180/f39c12/fff?text=🍚'"><div class="card-body"><h3>Mixed Fried Rice</h3><p class="price">₹200</p><button onclick="addToCart('Mixed Fried Rice',200)">Add</button></div></div>
+  <div class="card"><img src="images/panner fried rice.jpg" onerror="this.src='https://via.placeholder.com/300x180/f39c12/fff?text=🧀'"><div class="card-body"><h3>Paneer Fried Rice</h3><p class="price">₹170</p><button onclick="addToCart('Paneer Fried Rice',170)">Add</button></div></div>
+  <div class="card"><img src="images/prawn-fried-rice.jpg" onerror="this.src='https://via.placeholder.com/300x180/f39c12/fff?text=🦐'"><div class="card-body"><h3>Prawns Fried Rice</h3><p class="price">₹220</p><button onclick="addToCart('Prawns Fried Rice',220)">Add</button></div></div>
 </div>
 
 <!-- SOUPS -->
 <div class="section-title">🥣 Soups</div>
 <div class="menu">
-
-<div class="card"><img src="images/8814-homemade-chicken-soup.jpg"><div class="card-body"><h3>Chicken Soup</h3><p class="price">₹120</p><button onclick="addToCart('Chicken Soup',120)">Add</button></div></div>
-
-<div class="card"><img src="images/mutton soup.jpg"><div class="card-body"><h3>Mutton Soup</h3><p class="price">₹140</p><button onclick="addToCart('Mutton Soup',140)">Add</button></div></div>
-
-<div class="card"><img src="images/sweety corn.jpg"><div class="card-body"><h3>Sweet Corn Soup</h3><p class="price">₹100</p><button onclick="addToCart('Sweet Corn Soup',100)">Add</button></div></div>
-
-<div class="card"><img src="images/lemon-coriander-soup.jpg"><div class="card-body"><h3>Lemonn coriander Soup</h3><p class="price">₹110</p><button onclick="addToCart('Lemonn coriander Soup',110)">Add</button></div></div>
-
+  <div class="card"><img src="images/8814-homemade-chicken-soup.jpg" onerror="this.src='https://via.placeholder.com/300x180/8e44ad/fff?text=🥣'"><div class="card-body"><h3>Chicken Soup</h3><p class="price">₹120</p><button onclick="addToCart('Chicken Soup',120)">Add</button></div></div>
+  <div class="card"><img src="images/mutton soup.jpg" onerror="this.src='https://via.placeholder.com/300x180/8e44ad/fff?text=🥣'"><div class="card-body"><h3>Mutton Soup</h3><p class="price">₹140</p><button onclick="addToCart('Mutton Soup',140)">Add</button></div></div>
+  <div class="card"><img src="images/sweety corn.jpg" onerror="this.src='https://via.placeholder.com/300x180/8e44ad/fff?text=🌽'"><div class="card-body"><h3>Sweet Corn Soup</h3><p class="price">₹100</p><button onclick="addToCart('Sweet Corn Soup',100)">Add</button></div></div>
+  <div class="card"><img src="images/lemon-coriander-soup.jpg" onerror="this.src='https://via.placeholder.com/300x180/8e44ad/fff?text=🍋'"><div class="card-body"><h3>Lemon Coriander Soup</h3><p class="price">₹110</p><button onclick="addToCart('Lemon Coriander Soup',110)">Add</button></div></div>
 </div>
-
-
 
 <!-- DRINKS -->
 <div class="section-title">🥤 Soft Drinks</div>
 <div class="menu">
-
-<div class="card"><img src="images/Thums_Up.png"><div class="card-body"><h3>Thums Up</h3><p class="price">₹40</p><button onclick="addToCart('Thums Up',40)">Add</button></div></div>
-
-<div class="card"><img src="images/sprite.jpg"><div class="card-body"><h3>Sprite</h3><p class="price">₹40</p><button onclick="addToCart('Sprite',40)">Add</button></div></div>
-
-<div class="card"><img src="images/frooti.jpg"><div class="card-body"><h3>frooti</h3><p class="price">₹50</p><button onclick="addToCart('frooti',50)">Add</button></div></div>
-
-<div class="card"><img src="images/Coca_Cola.jpg"><div class="card-body"><h3>Coca Cola</h3><p class="price">₹40</p><button onclick="addToCart('Coca Cola',40)">Add</button></div></div>
-
-
+  <div class="card"><img src="images/Thums_Up.png" onerror="this.src='https://via.placeholder.com/300x180/2c3e50/fff?text=🥤'"><div class="card-body"><h3>Thums Up</h3><p class="price">₹40</p><button onclick="addToCart('Thums Up',40)">Add</button></div></div>
+  <div class="card"><img src="images/sprite.jpg" onerror="this.src='https://via.placeholder.com/300x180/2c3e50/fff?text=🥤'"><div class="card-body"><h3>Sprite</h3><p class="price">₹40</p><button onclick="addToCart('Sprite',40)">Add</button></div></div>
+  <div class="card"><img src="images/frooti.jpg" onerror="this.src='https://via.placeholder.com/300x180/2c3e50/fff?text=🥭'"><div class="card-body"><h3>Frooti</h3><p class="price">₹50</p><button onclick="addToCart('Frooti',50)">Add</button></div></div>
+  <div class="card"><img src="images/Coca_Cola.jpg" onerror="this.src='https://via.placeholder.com/300x180/2c3e50/fff?text=🥤'"><div class="card-body"><h3>Coca Cola</h3><p class="price">₹40</p><button onclick="addToCart('Coca Cola',40)">Add</button></div></div>
 </div>
 
-<!-- CART -->
+<!-- CART BAR -->
 <div id="cartBar">
-<div>
-<span id="count">0 items</span> | ₹<span id="total">0</span>
-</div>
-<button onclick="openCart()">View Cart</button>
+  <div><span id="count">0 items</span> &nbsp;|&nbsp; ₹<span id="total">0</span></div>
+  <button onclick="openCart()">🛒 View Cart</button>
 </div>
 
+<!-- CART MODAL -->
 <div id="cartModal">
-<div class="modal">
-<h2>Your Cart</h2>
-<div id="items"></div>
-<hr>
-<h3>Total ₹<span id="finalTotal">0</span></h3>
-
-<button onclick="pay()" style="background:green;width:100%;padding:10px;">Pay Now</button>
-<button onclick="closeCart()" style="width:100%;margin-top:10px;">Close</button>
+  <div class="modal">
+    <h2>🛒 Your Cart</h2>
+    <div id="items"></div>
+    <hr style="margin:16px 0;">
+    <h3 style="display:flex;justify-content:space-between;">
+      <span>Total</span>
+      <span style="color:#c02b7d;">₹<span id="finalTotal">0</span></span>
+    </h3>
+    <button id="payBtn" onclick="pay()" style="background:green;width:100%;padding:12px;margin-top:12px;font-size:16px;border-radius:8px;">
+      Pay Now
+    </button>
+    <button onclick="closeCart()" style="background:#888;width:100%;margin-top:8px;padding:10px;border-radius:8px;">
+      Close
+    </button>
+  </div>
 </div>
-</div>
 
-<script>
-
-let cart = [];
-
-/* ADD TO CART */
-function addToCart(name, price){
-
-    const existing = cart.find(item => item.name === name);
-
-    if(existing){
-        existing.qty += 1;
-    }else{
-        cart.push({
-            name,
-            price,
-            qty:1
-        });
-    }
-
-    updateCart();
-}
-
-/* UPDATE CART BAR */
-function updateCart(){
-
-    let total = 0;
-    let count = 0;
-
-    cart.forEach(item => {
-        total += item.price * item.qty;
-        count += item.qty;
-    });
-
-    document.getElementById("total").innerText = total;
-    document.getElementById("count").innerText = count + " items";
-
-    if(cart.length > 0){
-        document.getElementById("cartBar").style.display = "flex";
-    }else{
-        document.getElementById("cartBar").style.display = "none";
-    }
-
-}
-
-/* OPEN CART */
-function openCart(){
-
-    let html = "";
-    let total = 0;
-
-    if(cart.length === 0){
-
-        html = "<p>Your cart is empty</p>";
-
-    }else{
-
-        cart.forEach((item,index)=>{
-
-            total += item.price * item.qty;
-
-            html += `
-
-            <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:15px;
-            border-bottom:1px solid #ddd;
-            padding-bottom:10px;
-            ">
-
-                <div>
-                    <h4 style="margin:0;">${item.name}</h4>
-                    <p style="margin:5px 0;">
-                    ₹${item.price} × ${item.qty}
-                    </p>
-                </div>
-
-                <div>
-
-                    <button onclick="decreaseQty(${index})"
-                    style="background:#999;padding:5px 10px;">
-                    -
-                    </button>
-
-                    <button onclick="increaseQty(${index})"
-                    style="background:green;padding:5px 10px;">
-                    +
-                    </button>
-
-                    <button onclick="removeItem(${index})"
-                    style="background:red;padding:5px 10px;">
-                    Remove
-                    </button>
-
-                </div>
-
-            </div>
-
-            `;
-
-        });
-
-    }
-
-    document.getElementById("items").innerHTML = html;
-    document.getElementById("finalTotal").innerText = total;
-    document.getElementById("cartModal").style.display = "block";
-
-}
-
-/* CLOSE CART */
-function closeCart(){
-    document.getElementById("cartModal").style.display = "none";
-}
-
-/* INCREASE QTY */
-function increaseQty(index){
-
-    cart[index].qty++;
-
-    updateCart();
-    openCart();
-
-}
-
-/* DECREASE QTY */
-function decreaseQty(index){
-
-    if(cart[index].qty > 1){
-
-        cart[index].qty--;
-
-    }else{
-
-        cart.splice(index,1);
-
-    }
-
-    updateCart();
-    openCart();
-
-}
-
-/* REMOVE ITEM */
-function removeItem(index){
-
-    cart.splice(index,1);
-
-    updateCart();
-    openCart();
-
-}
-
-/* PAYMENT */
-async function pay(){
-
-    if(cart.length === 0){
-
-        alert("🛒 Cart is empty");
-        return;
-
-    }
-
-    let total = 0;
-
-    cart.forEach(item => {
-        total += item.price * item.qty;
-    });
-
-    const payBtn = event.target;
-
-    payBtn.innerText = "Processing...";
-    payBtn.disabled = true;
-
-    try{
-
-        let res = await fetch("http://localhost:5000/order",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-                items:cart,
-                total
-            })
-
-        });
-
-        let data = await res.json();
-
-        alert("✅ " + data.message);
-
-        cart = [];
-
-        updateCart();
-
-        closeCart();
-
-    }catch(err){
-
-        alert("❌ Backend not running");
-
-    }
-
-    payBtn.innerText = "Pay Now";
-    payBtn.disabled = false;
-
-}
-
-</script>
+<!-- External JS -->
+<script src="script.js"></script>
 
 </body>
 </html>
