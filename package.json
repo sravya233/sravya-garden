@@ -1,10 +1,14 @@
 {
+  "name": "sravya-garden",
+  "version": "1.0.0",
+  "description": "Sravya Garden Food Ordering App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
-    "better-sqlite3": "^12.9.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mongoose": "^9.6.2",
-    "nodemon": "^3.1.14"
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "better-sqlite3": "^9.4.3"
   }
 }
