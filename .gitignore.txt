@@ -1,5 +1,4 @@
 node_modules/
 orders.db
-orders.db-shm
-orders.db-wal
-.gitignore
+.env
+*.log
