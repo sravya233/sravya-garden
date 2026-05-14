@@ -7,8 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* ── SQLite Setup ───────────────────────────────────── */
-let db;
+/* ── SQLite (local) or Memory (Railway) ─────────────── */
+let db = null;
+
 try {
   const Database = require("better-sqlite3");
   db = new Database(path.join(__dirname, "orders.db"));
@@ -24,11 +25,13 @@ try {
   `);
   console.log("✅ SQLite ready → orders.db");
 } catch (err) {
-  console.log("⚠️  SQLite not found — run: npm install better-sqlite3");
+  console.log("ℹ️  Running with memory storage (Railway/cloud mode)");
   db = null;
 }
 
+/* ── Memory Storage (used on Railway) ───────────────── */
 let memoryOrders = [];
+let nextId       = 1;
 
 /* ── HEALTH CHECK ────────────────────────────────────── */
 app.get("/health", (req, res) => {
@@ -51,7 +54,6 @@ app.post("/order", (req, res) => {
       const result = db.prepare(
         "INSERT INTO orders (items, total, status) VALUES (?, ?, ?)"
       ).run(JSON.stringify(items), total, "Confirmed");
-
       console.log(`✅ Order #${result.lastInsertRowid} — ₹${total}`);
       return res.json({
         success: true,
@@ -60,15 +62,21 @@ app.post("/order", (req, res) => {
       });
     }
 
+    // Memory
     const order = {
-      id: memoryOrders.length + 1,
+      id:        nextId++,
       items,
       total,
-      status: "Confirmed",
+      status:    "Confirmed",
       createdAt: new Date().toISOString()
     };
     memoryOrders.push(order);
-    res.json({ success: true, message: `Order Placed! Order #${order.id}`, orderId: order.id });
+    console.log(`✅ Order #${order.id} (memory) — ₹${total}`);
+    res.json({
+      success: true,
+      message: `Order Placed! Order #${order.id}`,
+      orderId: order.id
+    });
 
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -114,7 +122,8 @@ app.put("/update-status/:id", (req, res) => {
       return res.json({ success: true, order: { ...updated, items: JSON.parse(updated.items) } });
     }
     const order = memoryOrders.find(o => o.id == req.params.id);
-    if (order) order.status = status;
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    order.status = status;
     res.json({ success: true, order });
   } catch (err) {
     res.status(500).json({ success: false });
@@ -128,5 +137,5 @@ app.use(express.static(path.join(__dirname, "public")));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`\n🚀 Server → http://localhost:${PORT}`);
-  console.log(`   Storage: ${db ? "SQLite (orders.db)" : "Memory"}\n`);
+  console.log(`   Storage: ${db ? "SQLite" : "Memory (cloud mode)"}\n`);
 });
