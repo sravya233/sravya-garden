@@ -2,13 +2,15 @@
    SRAVYA GARDEN — order.js
    ═══════════════════════════════════════════════ */
 
-const API = 'http://localhost:5000';
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000'
+  : 'https://sravya-garden-production.up.railway.app';
 
 let allOrders     = [];
 let currentFilter = 'All';
 let countdown     = 5;
 
-/* ── FETCH ORDERS (full load with spinner) ────────── */
+/* ── FETCH ORDERS ─────────────────────────────────── */
 async function fetchOrders() {
 
   document.getElementById("ordersContainer").innerHTML = `
@@ -32,14 +34,13 @@ async function fetchOrders() {
 
 }
 
-/* ── SILENT AUTO REFRESH (no spinner) ────────────── */
+/* ── SILENT AUTO REFRESH ──────────────────────────── */
 async function silentRefresh() {
 
   try {
     const res  = await fetch(`${API}/orders`);
     const data = await res.json();
 
-    // Only re-render if something actually changed
     if (JSON.stringify(data) !== JSON.stringify(allOrders)) {
       allOrders = data;
       updateStats();
@@ -55,7 +56,7 @@ async function silentRefresh() {
 
 }
 
-/* ── FLASH UPDATED INDICATOR ──────────────────────── */
+/* ── FLASH UPDATED ────────────────────────────────── */
 function flashUpdated() {
   const el = document.getElementById("autoRefreshTimer");
   if (!el) return;
@@ -100,10 +101,7 @@ function renderOrders(filter) {
 
   if (filtered.length === 0) {
     document.getElementById("ordersContainer").innerHTML = `
-      <div class="empty">
-        <p>🍽️</p>
-        <p style="font-size:16px;font-weight:700;">No orders found</p>
-      </div>
+      <div class="empty"><p>🍽️</p><p style="font-size:16px;font-weight:700;">No orders found</p></div>
     `;
     return;
   }
@@ -147,10 +145,7 @@ function renderOrders(filter) {
         ${itemsHtml}
         <div class="total">
           <span class="total-amount">Total: ₹${order.total}</span>
-          <a href="track.html?id=${order.id}" style="
-            font-size:13px;font-weight:800;color:#c02b7d;
-            text-decoration:none;
-          ">🚴 Track →</a>
+          <a href="track.html?id=${order.id}" style="font-size:13px;font-weight:800;color:#c02b7d;text-decoration:none;">🚴 Track →</a>
         </div>
         <div class="status-update">
           <span>Update:</span>
@@ -190,7 +185,7 @@ async function updateStatus(id) {
       renderOrders(currentFilter);
     }
   } catch(err) {
-    alert("❌ Could not update status. Is the server running?");
+    alert("❌ Could not update status.");
   }
 
 }
@@ -198,10 +193,8 @@ async function updateStatus(id) {
 /* ── ON PAGE LOAD ─────────────────────────────────── */
 fetchOrders();
 
-// Silent auto-refresh every 5 seconds
 setInterval(silentRefresh, 5000);
 
-// Countdown timer display
 setInterval(() => {
   countdown--;
   if (countdown <= 0) countdown = 5;

@@ -2,10 +2,9 @@
    SRAVYA GARDEN — script.js
    ═══════════════════════════════════════════════ */
 
-/* Auto-detects local vs deployed */
 const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000'
-  : '';
+  : 'https://sravya-garden-production.up.railway.app';
 
 let cart = [];
 
@@ -22,7 +21,6 @@ function addToCart(name, price) {
 
   updateCart();
 
-  // Flash the button green
   const buttons = document.querySelectorAll("button");
   buttons.forEach(btn => {
     if (btn.getAttribute("onclick") &&
@@ -64,26 +62,12 @@ function openCart() {
   let total = 0;
 
   if (cart.length === 0) {
-
-    html = `<p style="text-align:center;color:#aaa;padding:20px;">
-              Your cart is empty 🛒
-            </p>`;
-
+    html = `<p style="text-align:center;color:#aaa;padding:20px;">Your cart is empty 🛒</p>`;
   } else {
-
     cart.forEach((item, index) => {
-
       total += item.price * item.qty;
-
       html += `
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          margin-bottom:14px;
-          border-bottom:1px solid #eee;
-          padding-bottom:12px;
-        ">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid #eee;padding-bottom:12px;">
           <div>
             <h4 style="margin:0;font-size:15px;">${item.name}</h4>
             <p style="margin:4px 0;color:#c02b7d;font-weight:700;">
@@ -97,12 +81,10 @@ function openCart() {
           </div>
         </div>
       `;
-
     });
-
   }
 
-  document.getElementById("items").innerHTML     = html;
+  document.getElementById("items").innerHTML      = html;
   document.getElementById("finalTotal").innerText = total;
   document.getElementById("cartModal").style.display = "block";
 
@@ -173,7 +155,7 @@ async function pay() {
     }
 
   } catch (err) {
-    alert("❌ Backend not running!\nOpen CMD and run: node server.js");
+    alert("❌ Could not connect to server!");
   }
 
   payBtn.innerText = "Pay Now";
@@ -186,72 +168,25 @@ function showSuccess(orderId, total) {
 
   const popup = document.createElement("div");
   popup.style.cssText = `
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.6);
-    z-index:999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);
+    z-index:999;display:flex;align-items:center;justify-content:center;
   `;
 
   popup.innerHTML = `
-    <div style="
-      background:white;
-      border-radius:20px;
-      padding:36px 28px;
-      text-align:center;
-      max-width:340px;
-      width:90%;
-      box-shadow:0 20px 60px rgba(0,0,0,0.3);
-    ">
+    <div style="background:white;border-radius:20px;padding:36px 28px;text-align:center;max-width:340px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
       <div style="font-size:52px;">🎉</div>
-      <h2 style="color:#16a34a;margin:12px 0 6px;font-family:Nunito,sans-serif;">
-        Order Placed!
-      </h2>
-      <div style="
-        background:#f0f4ff;
-        border-radius:10px;
-        padding:10px 20px;
-        font-size:22px;
-        font-weight:900;
-        color:#250790;
-        letter-spacing:3px;
-        margin:12px 0;
-        font-family:monospace;
-      ">
+      <h2 style="color:#16a34a;margin:12px 0 6px;font-family:Nunito,sans-serif;">Order Placed!</h2>
+      <div style="background:#f0f4ff;border-radius:10px;padding:10px 20px;font-size:22px;font-weight:900;color:#250790;letter-spacing:3px;margin:12px 0;font-family:monospace;">
         Order #${orderId}
       </div>
-      <p style="color:#555;font-size:14px;margin:6px 0;">
-        Total: <strong>₹${total}</strong>
-      </p>
-      <p style="color:#555;font-size:14px;margin:6px 0;">
-        Estimated delivery: 30–40 mins 🚴
-      </p>
-      <a href="track.html?id=${orderId}" style="
-        display:block;
-        background:#c02b7d;
-        color:white;
-        text-decoration:none;
-        padding:12px;
-        border-radius:10px;
-        font-weight:800;
-        font-size:15px;
-        margin-top:14px;
-        font-family:Nunito,sans-serif;
-      ">🚴 Track My Order</a>
-      <button onclick="this.closest('div').parentElement.remove()" style="
-        background:#f0f0f0;
-        color:#333;
-        border:none;
-        width:100%;
-        padding:10px;
-        border-radius:10px;
-        font-size:14px;
-        font-weight:700;
-        cursor:pointer;
-        margin-top:8px;
-        font-family:Nunito,sans-serif;
-      ">Continue Ordering</button>
+      <p style="color:#555;font-size:14px;margin:6px 0;">Total: <strong>₹${total}</strong></p>
+      <p style="color:#555;font-size:14px;margin:6px 0;">Estimated delivery: 30–40 mins 🚴</p>
+      <a href="track.html?id=${orderId}" style="display:block;background:#c02b7d;color:white;text-decoration:none;padding:12px;border-radius:10px;font-weight:800;font-size:15px;margin-top:14px;font-family:Nunito,sans-serif;">
+        🚴 Track My Order
+      </a>
+      <button onclick="this.closest('div').parentElement.remove()" style="background:#f0f0f0;color:#333;border:none;width:100%;padding:10px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;font-family:Nunito,sans-serif;">
+        Continue Ordering
+      </button>
     </div>
   `;
 
