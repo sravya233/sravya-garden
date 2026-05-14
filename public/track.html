@@ -555,18 +555,19 @@ function renderOrder(order) {
     timerHtml = `<div class="cancelled-banner">❌ This order has been cancelled</div>`;
 
   } else {
-    // Calculate remaining time
-    const orderedAt  = new Date(order.createdAt);
-    const deliverAt  = new Date(orderedAt.getTime() + DELIVERY_MINUTES * 60 * 1000);
-    const now        = new Date();
-    const remaining  = Math.max(0, deliverAt - now);
+    // Parse date safely — handles SQLite, ISO, missing
+    let orderedAt = order.createdAt ? new Date(order.createdAt) : null;
+    if (!orderedAt || isNaN(orderedAt.getTime())) {
+      // Fallback: start 40 min countdown from NOW
+      orderedAt = new Date();
+    }
 
     timerHtml = `
       <div class="delivery-timer">
         <div class="timer-label">⏱ Estimated Delivery In</div>
         <div class="timer-display">
           <div class="timer-box">
-            <div class="num" id="timerMins">00</div>
+            <div class="num" id="timerMins">40</div>
             <div class="unit">mins</div>
           </div>
           <div class="timer-sep">:</div>
@@ -575,7 +576,7 @@ function renderOrder(order) {
             <div class="unit">secs</div>
           </div>
         </div>
-        <div class="timer-msg" id="timerMsg">🚴 Your order is on the way!</div>
+        <div class="timer-msg" id="timerMsg">👨‍🍳 Preparing your order...</div>
       </div>
     `;
 
@@ -619,7 +620,15 @@ function renderOrder(order) {
 /* ── COUNTDOWN TIMER ────────────────────────────── */
 function startCountdown(orderedAt) {
 
+  // Ensure orderedAt is a valid Date
+  if (!orderedAt || isNaN(orderedAt.getTime())) {
+    orderedAt = new Date();
+  }
+
   const deliverAt = new Date(orderedAt.getTime() + DELIVERY_MINUTES * 60 * 1000);
+
+  console.log('Order placed at:', orderedAt);
+  console.log('Deliver by:', deliverAt);
 
   function tick() {
     const now       = new Date();
