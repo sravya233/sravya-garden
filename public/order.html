@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All Orders - Sravya Garden</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-
 <style>
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,15 +26,21 @@ h1 {
   text-align: center;
   color: #888;
   font-size: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 
-.container {
-  max-width: 900px;
-  margin: auto;
+/* AUTO REFRESH INDICATOR */
+#autoRefreshTimer {
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 20px;
+  transition: color 0.3s;
 }
 
-/* STATS BAR */
+.container { max-width: 900px; margin: auto; }
+
+/* STATS */
 .stats {
   display: flex;
   gap: 14px;
@@ -138,16 +142,8 @@ h1 {
   gap: 8px;
 }
 
-.order-id {
-  font-size: 18px;
-  font-weight: 900;
-  color: #250790;
-}
-
-.date {
-  color: #aaa;
-  font-size: 13px;
-}
+.order-id { font-size: 18px; font-weight: 900; color: #250790; }
+.date     { color: #aaa; font-size: 13px; }
 
 /* STATUS BADGE */
 .status {
@@ -158,11 +154,11 @@ h1 {
   color: white;
 }
 
-.status.Preparing        { background: #f59e0b; }
 .status.Confirmed        { background: #3b82f6; }
+.status.Preparing        { background: #f59e0b; }
+.status.Out-for-Delivery { background: #f97316; }
 .status.Delivered        { background: #16a34a; }
 .status.Cancelled        { background: #dc2626; }
-.status.Out-for-Delivery { background: #f97316; }
 
 /* ITEMS */
 .item {
@@ -173,10 +169,9 @@ h1 {
   font-size: 14px;
 }
 
-.item:last-child { border-bottom: none; }
-
-.item-name  { font-weight: 700; color: #333; }
-.item-price { color: #c02b7d; font-weight: 800; }
+.item:last-child  { border-bottom: none; }
+.item-name        { font-weight: 700; color: #333; }
+.item-price       { color: #c02b7d; font-weight: 800; }
 
 /* TOTAL */
 .total {
@@ -188,11 +183,7 @@ h1 {
   gap: 10px;
 }
 
-.total-amount {
-  font-size: 18px;
-  font-weight: 900;
-  color: #16a34a;
-}
+.total-amount { font-size: 18px; font-weight: 900; color: #16a34a; }
 
 /* STATUS UPDATE */
 .status-update {
@@ -234,7 +225,7 @@ h1 {
   font-size: 13px;
 }
 
-/* LOADING / EMPTY */
+/* LOADING */
 .loading {
   text-align: center;
   padding: 60px 20px;
@@ -262,15 +253,29 @@ h1 {
 
 .empty p:first-child { font-size: 48px; }
 
+/* BACK LINK */
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #250790;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 14px;
+}
+
 </style>
 </head>
-
 <body>
 
 <h1>🍛 Sravya Garden Orders</h1>
 <p class="subtitle">Live order management panel</p>
 
+<!-- AUTO REFRESH INDICATOR -->
+<p id="autoRefreshTimer">Auto-refresh in 5s</p>
+
 <div class="container">
+
+  <a href="index.html" class="back-link">← Back to Menu</a>
 
   <!-- STATS -->
   <div class="stats">
@@ -296,8 +301,9 @@ h1 {
   <div class="filter-bar">
     <span>Filter:</span>
     <button class="filter-btn active" onclick="filterOrders('All', this)">All</button>
-    <button class="filter-btn" onclick="filterOrders('Preparing', this)">Preparing</button>
     <button class="filter-btn" onclick="filterOrders('Confirmed', this)">Confirmed</button>
+    <button class="filter-btn" onclick="filterOrders('Preparing', this)">Preparing</button>
+    <button class="filter-btn" onclick="filterOrders('Out for Delivery', this)">Out for Delivery</button>
     <button class="filter-btn" onclick="filterOrders('Delivered', this)">Delivered</button>
     <button class="filter-btn" onclick="filterOrders('Cancelled', this)">Cancelled</button>
     <button class="refresh-btn" onclick="fetchOrders()">🔄 Refresh</button>
@@ -313,7 +319,6 @@ h1 {
 
 </div>
 
-<!-- External JS file -->
 <script src="order.js"></script>
 
 </body>

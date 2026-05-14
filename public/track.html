@@ -15,7 +15,7 @@ body {
 }
 
 header {
-  background: #c02b7d;
+  background: linear-gradient(135deg, #c02b7d, #7d0b5a);
   color: white;
   text-align: center;
   padding: 20px;
@@ -33,17 +33,14 @@ header p  { font-size: 13px; opacity: .8; }
   font-size: 14px;
 }
 
-/* SEARCH BOX */
+/* SEARCH */
 .search-wrap {
   max-width: 500px;
-  margin: 10px auto 30px;
+  margin: 10px auto 24px;
   padding: 0 20px;
 }
 
-.search-box {
-  display: flex;
-  gap: 10px;
-}
+.search-box { display: flex; gap: 10px; }
 
 .search-box input {
   flex: 1;
@@ -54,7 +51,6 @@ header p  { font-size: 13px; opacity: .8; }
   font-size: 16px;
   font-weight: 700;
   outline: none;
-  text-transform: uppercase;
   letter-spacing: 2px;
   background: white;
 }
@@ -73,13 +69,20 @@ header p  { font-size: 13px; opacity: .8; }
   cursor: pointer;
 }
 
-.search-box button:hover { background: #a02368; }
+/* AUTO REFRESH */
+#liveIndicator {
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
 
-/* RESULT AREA */
+/* RESULT */
 #result {
   max-width: 560px;
   margin: 0 auto;
-  padding: 0 20px 40px;
+  padding: 0 20px 60px;
 }
 
 /* ORDER CARD */
@@ -105,24 +108,99 @@ header p  { font-size: 13px; opacity: .8; }
   align-items: center;
 }
 
-.order-header .order-id { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+.order-header .order-id   { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
 .order-header .order-date { font-size: 12px; opacity: .8; margin-top: 4px; }
+
 .order-header .total-badge {
   background: rgba(255,255,255,0.2);
   border-radius: 10px;
   padding: 8px 14px;
   text-align: center;
 }
+
 .order-header .total-badge .amt { font-size: 20px; font-weight: 900; }
 .order-header .total-badge .lbl { font-size: 11px; opacity: .8; }
 
-/* PROGRESS TRACKER */
-.tracker {
-  padding: 28px 24px 20px;
+/* ── DELIVERY TIMER ─────────────────────────────── */
+.delivery-timer {
+  background: linear-gradient(135deg, #1a0a6b, #250790);
+  color: white;
+  padding: 18px 24px;
+  text-align: center;
 }
 
-.tracker-title {
+.delivery-timer .timer-label {
+  font-size: 12px;
+  opacity: .75;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+
+.timer-box {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 64px;
+  text-align: center;
+}
+
+.timer-box .num {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  font-family: monospace;
+}
+
+.timer-box .unit {
+  font-size: 11px;
+  opacity: .7;
+  margin-top: 4px;
+}
+
+.timer-sep {
+  font-size: 28px;
+  font-weight: 900;
+  opacity: .6;
+  margin-bottom: 8px;
+}
+
+.timer-msg {
   font-size: 13px;
+  opacity: .85;
+  margin-top: 10px;
+}
+
+.delivered-banner {
+  background: #16a34a;
+  color: white;
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.cancelled-banner {
+  background: #dc2626;
+  color: white;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* PROGRESS TRACKER */
+.tracker { padding: 24px; }
+
+.tracker-title {
+  font-size: 12px;
   font-weight: 800;
   color: #888;
   margin-bottom: 20px;
@@ -137,13 +215,12 @@ header p  { font-size: 13px; opacity: .8; }
   position: relative;
 }
 
-/* connecting line */
 .steps::before {
   content: '';
   position: absolute;
   top: 20px;
-  left: 20px;
-  right: 20px;
+  left: 21px;
+  right: 21px;
   height: 3px;
   background: #f0e8dc;
   z-index: 0;
@@ -176,6 +253,7 @@ header p  { font-size: 13px; opacity: .8; }
   background: #16a34a;
   border-color: #16a34a;
   font-size: 16px;
+  color: white;
 }
 
 .step.active .step-circle {
@@ -185,8 +263,8 @@ header p  { font-size: 13px; opacity: .8; }
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(192,43,125,0.4); }
-  50%       { box-shadow: 0 0 0 8px rgba(192,43,125,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,43,125,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(192,43,125,0); }
 }
 
 .step-label {
@@ -195,20 +273,20 @@ header p  { font-size: 13px; opacity: .8; }
   color: #bbb;
   text-align: center;
   line-height: 1.3;
-  max-width: 60px;
+  max-width: 64px;
 }
 
 .step.done   .step-label { color: #16a34a; }
 .step.active .step-label { color: #c02b7d; }
 
-/* ITEMS LIST */
+/* ITEMS */
 .items-section {
   border-top: 1px solid #f5ece4;
   padding: 16px 24px;
 }
 
 .items-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   color: #888;
   margin-bottom: 12px;
@@ -228,27 +306,17 @@ header p  { font-size: 13px; opacity: .8; }
 .item-name  { font-weight: 700; color: #333; }
 .item-price { font-weight: 800; color: #c02b7d; }
 
-/* CANCELLED STATE */
-.cancelled-banner {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 10px;
-  padding: 14px 18px;
-  margin: 16px 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  color: #dc2626;
-  font-size: 14px;
+/* REFRESH INFO */
+.refresh-info {
+  text-align: center;
+  font-size: 12px;
+  color: #bbb;
+  padding: 12px;
+  border-top: 1px solid #f5ece4;
 }
 
 /* LOADING */
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: #888;
-}
+.loading { text-align: center; padding: 40px; color: #888; }
 
 .spinner {
   width: 36px; height: 36px;
@@ -261,7 +329,6 @@ header p  { font-size: 13px; opacity: .8; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ERROR */
 .error-box {
   background: #fef2f2;
   border-radius: 12px;
@@ -271,15 +338,10 @@ header p  { font-size: 13px; opacity: .8; }
 }
 
 .error-box .err-icon { font-size: 36px; margin-bottom: 10px; }
-.error-box p { font-weight: 700; font-size: 15px; }
-.error-box small { font-size: 13px; color: #888; display: block; margin-top: 6px; }
+.error-box p         { font-weight: 700; font-size: 15px; }
+.error-box small     { font-size: 13px; color: #888; display: block; margin-top: 6px; }
 
-/* HINT */
-.hint {
-  text-align: center;
-  padding: 40px 20px;
-  color: #ccc;
-}
+.hint { text-align: center; padding: 40px 20px; color: #ccc; }
 .hint .hint-icon { font-size: 48px; margin-bottom: 12px; }
 .hint p { font-size: 14px; font-weight: 700; }
 </style>
@@ -288,7 +350,7 @@ header p  { font-size: 13px; opacity: .8; }
 
 <header>
   <h1>🚴 Track Your Order</h1>
-  <p>Enter your Order ID to see live status</p>
+  <p>Live delivery status & countdown</p>
 </header>
 
 <a href="index.html" class="back-link">← Back to Menu</a>
@@ -297,27 +359,31 @@ header p  { font-size: 13px; opacity: .8; }
 <div class="search-wrap">
   <div class="search-box">
     <input
-      type="text"
+      type="number"
       id="orderInput"
-      placeholder="Enter Order ID e.g. 3"
+      placeholder="Enter Order ID e.g. 1"
       onkeydown="if(event.key==='Enter') trackOrder()"
     />
     <button onclick="trackOrder()">Track</button>
   </div>
 </div>
 
+<!-- LIVE INDICATOR -->
+<p id="liveIndicator"></p>
+
 <!-- RESULT -->
 <div id="result">
   <div class="hint">
     <div class="hint-icon">🍛</div>
-    <p>Enter your Order ID above to track your order</p>
+    <p>Enter your Order ID above to track</p>
   </div>
 </div>
 
 <script>
 
-const STATUSES = ['Confirmed', 'Preparing', 'Out for Delivery', 'Delivered'];
+const API = 'http://localhost:5000';
 
+const STATUSES   = ['Confirmed', 'Preparing', 'Out for Delivery', 'Delivered'];
 const STEP_CONFIG = [
   { label: 'Order\nConfirmed', emoji: '✅', status: 'Confirmed' },
   { label: 'Preparing\nFood',  emoji: '👨‍🍳', status: 'Preparing' },
@@ -325,59 +391,109 @@ const STEP_CONFIG = [
   { label: 'Delivered',        emoji: '🎉',  status: 'Delivered' },
 ];
 
+// Delivery time = 40 minutes from order placement
+const DELIVERY_MINUTES = 40;
+
+let currentOrder      = null;
+let timerInterval     = null;
+let autoRefreshTimer  = null;
+let liveCountdown     = 10;
+
+/* ── TRACK ORDER ────────────────────────────────── */
 async function trackOrder() {
 
   const input = document.getElementById('orderInput').value.trim();
+  if (!input) { alert('Please enter your Order ID'); return; }
 
-  if (!input) {
-    alert('Please enter your Order ID');
-    return;
-  }
-
-  const result = document.getElementById('result');
-
-  result.innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <p>Fetching your order...</p>
-    </div>
+  document.getElementById('result').innerHTML = `
+    <div class="loading"><div class="spinner"></div><p>Fetching your order...</p></div>
   `;
 
-  try {
+  await loadOrder(input);
 
-    const res  = await fetch(`http://localhost:5000/track/${input}`);
+  // Start auto-refresh every 10 seconds
+  clearInterval(autoRefreshTimer);
+  liveCountdown = 10;
+  autoRefreshTimer = setInterval(() => silentRefresh(input), 10000);
+
+  // Countdown display
+  setInterval(() => {
+    liveCountdown--;
+    if (liveCountdown <= 0) liveCountdown = 10;
+    const el = document.getElementById('liveIndicator');
+    if (el && currentOrder &&
+        currentOrder.status !== 'Delivered' &&
+        currentOrder.status !== 'Cancelled') {
+      el.innerText = `🔄 Status refreshes in ${liveCountdown}s`;
+    }
+  }, 1000);
+
+}
+
+/* ── LOAD ORDER FROM SERVER ─────────────────────── */
+async function loadOrder(id) {
+  try {
+    const res  = await fetch(`${API}/track/${id}`);
     const data = await res.json();
 
     if (!data || data.success === false) {
-      result.innerHTML = `
+      document.getElementById('result').innerHTML = `
         <div class="error-box">
           <div class="err-icon">❌</div>
-          <p>Order #${input} not found</p>
+          <p>Order #${id} not found</p>
           <small>Please check your Order ID and try again</small>
         </div>
       `;
       return;
     }
 
+    currentOrder = data;
     renderOrder(data);
 
   } catch(err) {
-
-    result.innerHTML = `
+    document.getElementById('result').innerHTML = `
       <div class="error-box">
         <div class="err-icon">⚠️</div>
         <p>Cannot connect to server</p>
-        <small>Make sure the backend is running: <strong>node server.js</strong></small>
+        <small>Make sure backend is running: <strong>node server.js</strong></small>
       </div>
     `;
-
   }
-
 }
 
+/* ── SILENT REFRESH ─────────────────────────────── */
+async function silentRefresh(id) {
+  try {
+    const res  = await fetch(`${API}/track/${id}`);
+    const data = await res.json();
+
+    if (data && data.success !== false) {
+      // Only re-render if status changed
+      if (!currentOrder || data.status !== currentOrder.status) {
+        currentOrder = data;
+        renderOrder(data);
+        flashLive();
+      }
+      liveCountdown = 10;
+    }
+  } catch(err) {
+    console.log("Silent refresh failed");
+  }
+}
+
+/* ── FLASH LIVE INDICATOR ───────────────────────── */
+function flashLive() {
+  const el = document.getElementById('liveIndicator');
+  if (!el) return;
+  el.style.color  = "#16a34a";
+  el.innerText    = "✔ Status updated!";
+  setTimeout(() => { el.style.color = "#aaa"; }, 2000);
+}
+
+/* ── RENDER ORDER ───────────────────────────────── */
 function renderOrder(order) {
 
-  const result = document.getElementById('result');
+  clearInterval(timerInterval);
 
   // Date
   let dateStr = '—';
@@ -387,33 +503,30 @@ function renderOrder(order) {
       : d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
   }
 
-  // Current step index
+  // Step progress
   const currentIndex = STATUSES.indexOf(order.status);
   const isCancelled  = order.status === 'Cancelled';
+  const isDelivered  = order.status === 'Delivered';
 
-  // Steps HTML
   let stepsHtml = '';
   STEP_CONFIG.forEach((step, i) => {
-    let cls = '';
+    let cls  = '';
     if (!isCancelled) {
-      if (i < currentIndex)  cls = 'done';
+      if (i < currentIndex)   cls = 'done';
       if (i === currentIndex) cls = 'active';
     }
-
-    const icon = (cls === 'done') ? '✔' : step.emoji;
-
+    const icon = cls === 'done' ? '✔' : step.emoji;
     stepsHtml += `
       <div class="step ${cls}">
         <div class="step-circle">${icon}</div>
-        <div class="step-label">${step.label.replace('\n', '<br>')}</div>
+        <div class="step-label">${step.label.replace('\n','<br>')}</div>
       </div>
     `;
   });
 
-  // Items HTML
+  // Items
   let itemsHtml = '';
-  const items = order.items || [];
-  items.forEach(item => {
+  (order.items || []).forEach(item => {
     const qty   = item.qty || item.quantity || 1;
     const price = item.price || 0;
     itemsHtml += `
@@ -424,16 +537,52 @@ function renderOrder(order) {
     `;
   });
 
-  // Cancelled banner
-  const cancelledHtml = isCancelled ? `
-    <div class="cancelled-banner">
-      ❌ This order has been cancelled
-    </div>
-  ` : '';
+  // Timer or delivered/cancelled banner
+  let timerHtml = '';
 
-  result.innerHTML = `
+  if (isDelivered) {
+    timerHtml = `
+      <div class="delivered-banner">
+        🎉 Order Delivered! Enjoy your meal!
+      </div>
+    `;
+    const el = document.getElementById('liveIndicator');
+    if (el) el.innerText = '';
+
+  } else if (isCancelled) {
+    timerHtml = `<div class="cancelled-banner">❌ This order has been cancelled</div>`;
+
+  } else {
+    // Calculate remaining time
+    const orderedAt  = new Date(order.createdAt);
+    const deliverAt  = new Date(orderedAt.getTime() + DELIVERY_MINUTES * 60 * 1000);
+    const now        = new Date();
+    const remaining  = Math.max(0, deliverAt - now);
+
+    timerHtml = `
+      <div class="delivery-timer">
+        <div class="timer-label">⏱ Estimated Delivery In</div>
+        <div class="timer-display">
+          <div class="timer-box">
+            <div class="num" id="timerMins">00</div>
+            <div class="unit">mins</div>
+          </div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box">
+            <div class="num" id="timerSecs">00</div>
+            <div class="unit">secs</div>
+          </div>
+        </div>
+        <div class="timer-msg" id="timerMsg">🚴 Your order is on the way!</div>
+      </div>
+    `;
+
+    // Start countdown after render
+    setTimeout(() => startCountdown(orderedAt), 100);
+  }
+
+  document.getElementById('result').innerHTML = `
     <div class="order-card">
-
       <div class="order-header">
         <div>
           <div class="order-id">Order #${order.id}</div>
@@ -445,10 +594,10 @@ function renderOrder(order) {
         </div>
       </div>
 
-      ${cancelledHtml}
+      ${timerHtml}
 
       <div class="tracker">
-        <div class="tracker-title">Order Status</div>
+        <div class="tracker-title">Order Status — ${order.status}</div>
         <div class="steps">${stepsHtml}</div>
       </div>
 
@@ -457,17 +606,53 @@ function renderOrder(order) {
         ${itemsHtml || '<p style="color:#bbb;font-size:14px;">No items found</p>'}
       </div>
 
+      <div class="refresh-info">
+        🔄 Status updates automatically every 10 seconds
+      </div>
     </div>
   `;
 
-  // Auto-refresh every 20 seconds if not delivered/cancelled
-  if (order.status !== 'Delivered' && order.status !== 'Cancelled') {
-    setTimeout(() => trackOrder(), 20000);
+}
+
+/* ── COUNTDOWN TIMER ────────────────────────────── */
+function startCountdown(orderedAt) {
+
+  const deliverAt = new Date(orderedAt.getTime() + DELIVERY_MINUTES * 60 * 1000);
+
+  function tick() {
+    const now       = new Date();
+    const remaining = Math.max(0, deliverAt - now);
+
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+
+    const mEl = document.getElementById('timerMins');
+    const sEl = document.getElementById('timerSecs');
+    const msg = document.getElementById('timerMsg');
+
+    if (!mEl) { clearInterval(timerInterval); return; }
+
+    mEl.innerText = String(mins).padStart(2, '0');
+    sEl.innerText = String(secs).padStart(2, '0');
+
+    if (remaining === 0) {
+      if (msg) msg.innerText = '🎉 Should be arriving now!';
+      clearInterval(timerInterval);
+    } else if (mins < 5) {
+      if (msg) msg.innerText = '🚴 Almost there!';
+    } else if (mins < 15) {
+      if (msg) msg.innerText = '🚴 Out for delivery!';
+    } else {
+      if (msg) msg.innerText = '👨‍🍳 Preparing your order...';
+    }
   }
+
+  tick();
+  timerInterval = setInterval(tick, 1000);
 
 }
 
-// Auto-track if order ID in URL: track.html?id=5
+/* ── AUTO TRACK FROM URL ────────────────────────── */
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const id     = params.get('id');

@@ -4,10 +4,11 @@
 
 const API = 'http://localhost:5000';
 
-let allOrders    = [];
+let allOrders     = [];
 let currentFilter = 'All';
+let countdown     = 5;
 
-/* ── FETCH ORDERS ─────────────────────────────────── */
+/* ── FETCH ORDERS (full load with spinner) ────────── */
 async function fetchOrders() {
 
   document.getElementById("ordersContainer").innerHTML = `
@@ -29,6 +30,42 @@ async function fetchOrders() {
     `;
   }
 
+}
+
+/* ── SILENT AUTO REFRESH (no spinner) ────────────── */
+async function silentRefresh() {
+
+  try {
+    const res  = await fetch(`${API}/orders`);
+    const data = await res.json();
+
+    // Only re-render if something actually changed
+    if (JSON.stringify(data) !== JSON.stringify(allOrders)) {
+      allOrders = data;
+      updateStats();
+      renderOrders(currentFilter);
+      flashUpdated();
+    }
+
+    countdown = 5;
+
+  } catch(err) {
+    console.log("Auto-refresh failed");
+  }
+
+}
+
+/* ── FLASH UPDATED INDICATOR ──────────────────────── */
+function flashUpdated() {
+  const el = document.getElementById("autoRefreshTimer");
+  if (!el) return;
+  el.style.color      = "#16a34a";
+  el.style.fontWeight = "800";
+  el.innerText        = "✔ New order received!";
+  setTimeout(() => {
+    el.style.color      = "#aaa";
+    el.style.fontWeight = "400";
+  }, 2000);
 }
 
 /* ── UPDATE STATS ─────────────────────────────────── */
@@ -63,7 +100,10 @@ function renderOrders(filter) {
 
   if (filtered.length === 0) {
     document.getElementById("ordersContainer").innerHTML = `
-      <div class="empty"><p>🍽️</p><p style="font-size:16px;font-weight:700;">No orders found</p></div>
+      <div class="empty">
+        <p>🍽️</p>
+        <p style="font-size:16px;font-weight:700;">No orders found</p>
+      </div>
     `;
     return;
   }
@@ -155,6 +195,18 @@ async function updateStatus(id) {
 
 }
 
-/* ── LOAD ON START ────────────────────────────────── */
+/* ── ON PAGE LOAD ─────────────────────────────────── */
 fetchOrders();
-setInterval(fetchOrders, 30000);
+
+// Silent auto-refresh every 5 seconds
+setInterval(silentRefresh, 5000);
+
+// Countdown timer display
+setInterval(() => {
+  countdown--;
+  if (countdown <= 0) countdown = 5;
+  const el = document.getElementById("autoRefreshTimer");
+  if (el && !el.innerText.includes("✔")) {
+    el.innerText = `Auto-refresh in ${countdown}s`;
+  }
+}, 1000);
